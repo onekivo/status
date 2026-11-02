@@ -1,0 +1,30 @@
+/* KIVO's status-page theme. Values are the app's own tokens
+   (src/styles/theme/colors.ts): the light scheme's canvas and ink, the indigo
+   accent, and the semantic marks for up, degraded and down. */
+
+:root {
+  --body-background-color: #f6f6f8;
+  --body-text-color: #14161c;
+  --card-background-color: #ffffff;
+  --card-border-color: #e7e8ec;
+  --nav-background-color: #ffffff;
+  --nav-border-bottom-color: #e7e8ec;
+  --nav-current-border-bottom-color: #3f4ca8;
+  --up-border-left-color: #22654f;
+  --degraded-border-left-color: #c26228;
+  --down-border-left-color: #913049;
+  --down-background-color: #fceaec;
+  --tag-color: #ffffff;
+  --tag-up-background-color: #22654f;
+  --tag-degraded-background-color: #c26228;
+  --tag-down-background-color: #913049;
+  --change-background-color: #c26228;
+  --error-button-border-color: #38439a;
+  --error-button-background-color: #3f4ca8;
+  --error-button-color: #ffffff;
+  --submit-button-border-color: #38439a;
+  --submit-button-background-color: #3f4ca8;
+  --submit-button-color: #ffffff;
+  --graph-opacity: 1;
+  --graph-filter: none;
+}

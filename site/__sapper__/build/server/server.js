@@ -311,6 +311,66 @@ var sites = [
 		__dangerous__body_down_if_regex_missing: "\"status\":\"(healthy|degraded)\""
 	},
 	{
+		name: "App: database",
+		slug: "app-database",
+		url: "https://app.onekivo.com/api/health",
+		icon: "https://onekivo.github.io/status/kivo-192.png",
+		maxResponseTime: 5000,
+		expectedStatusCodes: [
+			200,
+			503
+		],
+		__dangerous__body_down_if_regex_missing: "\"database\":\"(ok|skipped)\""
+	},
+	{
+		name: "App: job queue",
+		slug: "app-queue",
+		url: "https://app.onekivo.com/api/health",
+		icon: "https://onekivo.github.io/status/kivo-192.png",
+		maxResponseTime: 5000,
+		expectedStatusCodes: [
+			200,
+			503
+		],
+		__dangerous__body_down_if_regex_missing: "\"queue\":\"(ok|skipped)\""
+	},
+	{
+		name: "App: file storage",
+		slug: "app-storage",
+		url: "https://app.onekivo.com/api/health",
+		icon: "https://onekivo.github.io/status/kivo-192.png",
+		maxResponseTime: 5000,
+		expectedStatusCodes: [
+			200,
+			503
+		],
+		__dangerous__body_down_if_regex_missing: "\"storage\":\"(ok|skipped)\""
+	},
+	{
+		name: "App: encrypted fields",
+		slug: "app-kms",
+		url: "https://app.onekivo.com/api/health",
+		icon: "https://onekivo.github.io/status/kivo-192.png",
+		maxResponseTime: 5000,
+		expectedStatusCodes: [
+			200,
+			503
+		],
+		__dangerous__body_down_if_regex_missing: "\"kms\":\"(ok|skipped)\""
+	},
+	{
+		name: "App: email sending",
+		slug: "app-mail",
+		url: "https://app.onekivo.com/api/health",
+		icon: "https://onekivo.github.io/status/kivo-192.png",
+		maxResponseTime: 5000,
+		expectedStatusCodes: [
+			200,
+			503
+		],
+		__dangerous__body_down_if_regex_missing: "\"mail\":\"(ok|skipped)\""
+	},
+	{
 		name: "Background jobs",
 		slug: "worker",
 		url: "https://worker.onekivo.com/health",
@@ -422,6 +482,7 @@ var config$1 = {
 	logoHref: "https://onekivo.github.io/status/",
 	favicon: "https://onekivo.github.io/status/kivo-192.png",
 	faviconSvg: "https://onekivo.github.io/status/kivo.svg",
+	themeUrl: "https://onekivo.github.io/status/kivo-theme.css",
 	introTitle: "Availability of **KIVO**",
 	introMessage: "Checked every five minutes from outside our own infrastructure. Questions about an incident? Write to [hello@onekivo.com](mailto:hello@onekivo.com).",
 	navbar: [
@@ -434,7 +495,8 @@ var config$1 = {
 			href: "https://app.onekivo.com"
 		}
 	],
-	robotsText: "User-agent: *\nAllow: /"
+	robotsText: "User-agent: *\nAllow: /",
+	css: "a { color: #38439a; } a:hover, a:focus { color: #29327f; }"
 },
 	path: path,
 	i18n: i18n
@@ -996,9 +1058,8 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 	? `${each$1((config$1["status-website"] || {}).metaTags, link => {
 			return `<meta${add_attribute("name", link.name, 0)}${add_attribute("content", link.content, 0)}>`;
 		})}`
-	: ``}${config$1['status-website'].css
-	? `<!-- HTML_TAG_START -->${`<style>${config$1['status-website'].css}</style>`}<!-- HTML_TAG_END -->`
-	: ``}${config$1['status-website'].js
+	: ``}${`<!-- HTML_TAG_START -->${`<style>${config$1['status-website'].css}</style>`}<!-- HTML_TAG_END -->`
+	}${config$1['status-website'].js
 	? `<!-- HTML_TAG_START -->${`<script>${config$1['status-website'].js}</script>`}<!-- HTML_TAG_END -->`
 	: ``}` + '<!-- HEAD_svelte-z1n8lm_END -->', "")}
 
