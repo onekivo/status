@@ -22,6 +22,45 @@ sites:
     maxResponseTime: 5000
     __dangerous__body_degraded: '"status":"degraded"'
     __dangerous__body_down_if_regex_missing: '"status":"(healthy|degraded)"'
+  # One row per check in /api/health's `checks` object. Same request, and the
+  # probes behind it are cached, so the rows cost almost nothing extra. 503 is
+  # an expected code here: one broken part must not turn every row red. Each
+  # row goes down only when its own check is neither `ok` nor `skipped`.
+  - name: "App: database"
+    slug: app-database
+    url: https://app.onekivo.com/api/health
+    icon: https://onekivo.github.io/status/kivo-192.png
+    maxResponseTime: 5000
+    expectedStatusCodes: [200, 503]
+    __dangerous__body_down_if_regex_missing: '"database":"(ok|skipped)"'
+  - name: "App: job queue"
+    slug: app-queue
+    url: https://app.onekivo.com/api/health
+    icon: https://onekivo.github.io/status/kivo-192.png
+    maxResponseTime: 5000
+    expectedStatusCodes: [200, 503]
+    __dangerous__body_down_if_regex_missing: '"queue":"(ok|skipped)"'
+  - name: "App: file storage"
+    slug: app-storage
+    url: https://app.onekivo.com/api/health
+    icon: https://onekivo.github.io/status/kivo-192.png
+    maxResponseTime: 5000
+    expectedStatusCodes: [200, 503]
+    __dangerous__body_down_if_regex_missing: '"storage":"(ok|skipped)"'
+  - name: "App: encrypted fields"
+    slug: app-kms
+    url: https://app.onekivo.com/api/health
+    icon: https://onekivo.github.io/status/kivo-192.png
+    maxResponseTime: 5000
+    expectedStatusCodes: [200, 503]
+    __dangerous__body_down_if_regex_missing: '"kms":"(ok|skipped)"'
+  - name: "App: email sending"
+    slug: app-mail
+    url: https://app.onekivo.com/api/health
+    icon: https://onekivo.github.io/status/kivo-192.png
+    maxResponseTime: 5000
+    expectedStatusCodes: [200, 503]
+    __dangerous__body_down_if_regex_missing: '"mail":"(ok|skipped)"'
   # 503 when the queue consumers failed to register; 200 "degraded" when the
   # database, the cron schedules or the crypto self-check failed
   # (worker/src/index.ts in onekivo/Kivo).
@@ -60,6 +99,7 @@ status-website:
   logoHref: https://onekivo.github.io/status/
   favicon: https://onekivo.github.io/status/kivo-192.png
   faviconSvg: https://onekivo.github.io/status/kivo.svg
+  themeUrl: https://onekivo.github.io/status/kivo-theme.css
   introTitle: "Availability of **KIVO**"
   introMessage: Checked every five minutes from outside our own infrastructure. Questions about an incident? Write to [hello@onekivo.com](mailto:hello@onekivo.com).
   navbar:
@@ -68,3 +108,4 @@ status-website:
     - title: KIVO
       href: https://app.onekivo.com
   robotsText: "User-agent: *\nAllow: /"
+  css: "a { color: #38439a; } a:hover, a:focus { color: #29327f; }"
