@@ -1,31 +1,65 @@
-# Change these first
-owner: upptime # Your GitHub organization or username, where this repository lives
-repo: upptime # The name of this repository
+# KIVO's status page: https://onekivo.github.io/status/
+# Configuration reference: https://upptime.js.org/docs/configuration
+#
+# Runs on GitHub, never on our own hosts, so it still reports when they are
+# down. Every check goes through the same public names customers use (Bunny's
+# edge included), from GitHub-hosted runners.
+owner: onekivo
+repo: status
+user-agent: onekivo
+
+# No check needs a secret; an empty list keeps every repository secret out of
+# the checks.
+secrets: []
 
 sites:
-  - name: Google
-    url: https://www.google.com
-  - name: Wikipedia
-    url: https://en.wikipedia.org
-  - name: Hacker News
-    url: https://news.ycombinator.com
-  - name: Secret Site
-    url: $SECRET_SITE
+  # 503 when the database or the queue schema fails; 200 "degraded" when
+  # storage, KMS or mail fails (src/pages/api/health.ts in onekivo/Kivo).
+  - name: App
+    slug: app
+    url: https://app.onekivo.com/api/health
+    icon: https://onekivo.github.io/status/kivo-192.png
+    maxResponseTime: 5000
+    __dangerous__body_degraded: '"status":"degraded"'
+    __dangerous__body_down_if_regex_missing: '"status":"(healthy|degraded)"'
+  # 503 when the queue consumers failed to register; 200 "degraded" when the
+  # database, the cron schedules or the crypto self-check failed
+  # (worker/src/index.ts in onekivo/Kivo).
+  - name: Background jobs
+    slug: worker
+    url: https://worker.onekivo.com/health
+    icon: https://onekivo.github.io/status/kivo-192.png
+    maxResponseTime: 5000
+    __dangerous__body_degraded: '"status":"degraded"'
+    __dangerous__body_down_if_regex_missing: '"status":"(ok|degraded)"'
+  - name: Website
+    slug: website
+    url: https://onekivo.com/
+    icon: https://onekivo.github.io/status/kivo-192.png
+    maxResponseTime: 5000
+  - name: Short links and QR codes
+    slug: qr
+    url: https://qr.onekivo.com/healthz
+    icon: https://onekivo.github.io/status/kivo-192.png
+    maxResponseTime: 5000
+    __dangerous__body_down_if_text_missing: '"ok":true'
+
+# Keep every incident in the history, even one shorter than 15 minutes.
+skipDeleteIssues: true
+skipPoweredByReadme: true
 
 status-website:
-  # Add your custom domain name, or remove the `cname` line if you don't have a domain
-  # Uncomment the `baseUrl` line if you don't have a custom domain and add your repo name there
-  cname: demo.upptime.js.org
-  # baseUrl: /your-repo-name
-  logoUrl: https://raw.githubusercontent.com/upptime/upptime.js.org/master/static/img/icon.svg
-  name: Upptime
-  introTitle: "**Upptime** is the open-source uptime monitor and status page, powered entirely by GitHub."
-  introMessage: This is a sample status page which uses **real-time** data from our [GitHub repository](https://github.com/upptime/upptime). No server required — just GitHub Actions, Issues, and Pages. [**Get your own for free**](https://github.com/upptime/upptime)
+  baseUrl: /status
+  name: KIVO Status
+  logoUrl: https://onekivo.github.io/status/kivo.svg
+  logoHref: https://onekivo.github.io/status/
+  favicon: https://onekivo.github.io/status/kivo-192.png
+  faviconSvg: https://onekivo.github.io/status/kivo.svg
+  introTitle: "Availability of **KIVO**"
+  introMessage: Checked every five minutes from outside our own infrastructure. Questions about an incident? Write to [hello@onekivo.com](mailto:hello@onekivo.com).
   navbar:
     - title: Status
       href: /
-    - title: GitHub
-      href: https://github.com/$OWNER/$REPO
-
-# Upptime also supports notifications, assigning issues, and more
-# See https://upptime.js.org/docs/configuration
+    - title: KIVO
+      href: https://app.onekivo.com
+  robotsText: "User-agent: *\nAllow: /"
