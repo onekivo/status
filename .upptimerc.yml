@@ -52,6 +52,7 @@ skipPoweredByReadme: true
 skipDescriptionUpdate: true
 skipTopicsUpdate: true
 skipHomepageUpdate: true
+
 status-website:
   baseUrl: /status
   name: KIVO Status
