@@ -47,7 +47,11 @@ sites:
 # Keep every incident in the history, even one shorter than 15 minutes.
 skipDeleteIssues: true
 skipPoweredByReadme: true
-
+# Description, topics and homepage are set by hand; the App has no
+# administration permission to rewrite them.
+skipDescriptionUpdate: true
+skipTopicsUpdate: true
+skipHomepageUpdate: true
 status-website:
   baseUrl: /status
   name: KIVO Status
